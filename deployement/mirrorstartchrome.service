@@ -1,0 +1,14 @@
+[Unit]
+Description=Magic Mirror local frontend
+Requires=mirrorfront.service
+After=mirrorfront.service
+
+[Service]
+Type=simple
+ExecStartPre=/bin/sleep 8
+WorkingDirectory=/srv/mirror/apps
+ExecStart=/snap/bin/chromium http://127.0.0.1:8000 --start-fullscreen --disk-cache-dir=/dev/null --disk-cache-size=1 --media-cache-size=1 --incognito
+Environment=DISPLAY=:0
+
+[Install]
+WantedBy=default.target

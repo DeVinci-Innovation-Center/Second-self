@@ -1,0 +1,14 @@
+[Unit]
+Description=Magic Mirror local frontend
+Wants=mirror.service
+
+[Service]
+Type=simple
+PIDFile=/var/run/mirrorfront.pid
+WorkingDirectory=/srv/mirror/apps
+ExecStart=/usr/bin/python3 -m http.server
+Environment=DISPLAY=:0
+StandardOutput=syslog+console
+
+[Install]
+WantedBy=default.target

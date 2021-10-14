@@ -17,6 +17,6 @@ COPY . .
 
 WORKDIR /Miroir/backend/
 
-ENV DEVICE=cpu
+ENV DEVICE cpu
 
 CMD python3 main.py

@@ -15,6 +15,8 @@ RUN apt-get -o Dpkg::Options::="--force-confmiss" install --reinstall netbase
 
 COPY . .
 
-WORKDIR /Miroir/reflection/
+WORKDIR /Miroir/backend/
 
-CMD python3 send_data.py
+ENV DEVICE=cpu
+
+CMD python3 main.py

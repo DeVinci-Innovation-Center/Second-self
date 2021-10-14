@@ -114,6 +114,8 @@ WORKDIR /Miroir
 
 COPY . .
 
-WORKDIR /Miroir/reflection/
+WORKDIR /Miroir/backend/
 
-CMD DISPLAY=:0 python3 send_data.py
+ENV DEVICE gpu
+
+CMD DISPLAY=:0 python3 main.py

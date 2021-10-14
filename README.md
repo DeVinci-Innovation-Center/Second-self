@@ -17,7 +17,7 @@ To execute the container, use `make run`. Make sure that you've already
 installed nvidia-docker, that your computer supports cuda and that you have exposed your screen on the local network
 using `sudo xhost +local:root`.
 <br/>
-Inside the docker container `launch_reflection.sh` will be executed and launch the recognition software.
+Inside the docker container `python3 main.py` will be executed and launch the recognition software.
 
 ### Manualy launching the intermediate Server
 
@@ -31,10 +31,10 @@ Make sure to be in a docker container if your computer doesn't have nodeJS.
 
 ### Manualy sending position data to the server
 
-In /reflections, while being in the docker container, use:
+In sencond-self/backend, while being in the docker container, use:
 
 ```bash
-python3 send_data.py
+python3 main.py
 ```
 
 ## Openning the app

@@ -37,7 +37,7 @@ RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 1
 RUN python3 -m pip install --upgrade pip
 RUN python3 -m pip install setuptools
 RUN python3 -m pip install sklearn
-ADD requirements.txt .
+ADD build/gpu/requirements.txt .
 RUN python3 -m pip install -r requirements.txt
 RUN python3 -m pip install gdown
 
@@ -114,6 +114,8 @@ WORKDIR /Miroir
 
 COPY . .
 
-WORKDIR /Miroir/reflection/
+WORKDIR /Miroir/backend/
 
-CMD DISPLAY=:0 python3 send_data.py
+ENV DEVICE gpu
+
+CMD DISPLAY=:0 python3 main.py

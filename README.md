@@ -1,45 +1,56 @@
-# Augmented mirror
+# Second Self
 
 ## Description
 
-This project uses multiples recognition softwares to project the body
-pose and features of the user on a mirror matching his viewpoint.
+Second Self is an augmented reality platform based on an augmented mirror: a mirror on which information can be displayed. This project uses an augmented mirror with the Intel D435, a depth and color camera. Using this camera and the pose estimation library mediapipe, a user standing in front of the mirror can interact with it using gestures.<br/><br/>
+The goal of this project being to create a platform, we develop a general and multipurpose backend and some specialized modules in the frontend.<br/><br/>
+To versions are currently available, one for cpu and another for gpu if your have a graphic card. The gpu version is slightly faster. to choose between the two versions, edit the DEVICE environment variable in the `second-self/.env` file.
 
 ## Requirements
 
+### CPU version
+
 - Nvidia-Docker
-- A nvidia GPU with drivers installed
 
-## Using the Docker container
+### GPU version
 
-To build the container from the docker file, simply use `make build`.<br/>
-To execute the container, use `make run`. Make sure that you've already
-installed nvidia-docker, that your computer supports cuda and that you have exposed your screen on the local network
-using `sudo xhost +local:root`.
-<br/>
-Inside the docker container `launch_reflection.sh` will be executed and launch the recognition software.
+- Nvidia-Docker
+- A nvidia GPU with drivers installed. Make sure that your version of cuda corresponds to the version used in the Dockerfile
 
-### Manualy launching the intermediate Server
+## Launching the demo
 
-In /server, use:
+The demo starts automaticaly on startup. If a problem occurs, simply restart the computer. If the problem perssists, see the following sections to find the problem and solve it
+
+## Steps to prepare the demo
+
+### Build the docker image
+
+To build the container from the docker file, simply use `make build`. If you're building the demo version, make sure to add one to the `VERSION=` variable in `second-self/.env` **afterward** so that you won't build for the same version next time
+
+### Move the `second-self` folder to `/srv/mirror`
+
+### Deploy the services using the Makefile
+
+For the demo to execute on startup, 3 services must be set up, each corresponding to the 3 steps required to start the mirror
+## Individual component control
+### Manualy sending position data from the backend to the frontend
+
+To execute the backend container, use `make run`.<br/>
+**GPU version:** Make sure that you have exposed your screen on the local network using `sudo xhost +local:root`.<br/>
+Inside the docker container `python3 main.py` will be executed and launch the backend.
+### Serving the frontend
+
+In `sencond-self/frontend`, use:
 
 ```bash
-node server.js
+python3 -m http.server
 ```
 
 Make sure to be in a docker container if your computer doesn't have nodeJS.
 
-### Manualy sending position data to the server
+### Openning the app
 
-In /reflections, while being in the docker container, use:
-
-```bash
-python3 send_data.py
-```
-
-## Openning the app
-
-Use `make open` to see the result on the current machine or `make open_ssh` in a ssh connection in a distant machine.
+Use `make open` to see the result on your machine or `make open_ssh` in a ssh connection in a distant machine.
 
 ## Ressources:
 

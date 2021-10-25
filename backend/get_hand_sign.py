@@ -5,7 +5,7 @@ import torch.nn as nn
 import os
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
-model_path = os.path.join(dir_path, '../models/handsign.pt')
+model_path = os.path.join(dir_path, 'models/handsign.pt')
 
 SIGNS = {
     "0": "OK",

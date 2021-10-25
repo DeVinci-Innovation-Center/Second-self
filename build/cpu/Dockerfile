@@ -8,13 +8,15 @@ RUN apt-get update && \
 RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 1
 RUN python3.7 -m pip install --upgrade pip
 RUN python3.7 -m pip install sklearn setuptools
-ADD requirements.txt .
+ADD build/cpu/requirements.txt .
 RUN python3.7 -m pip install -r requirements.txt
 
 RUN apt-get -o Dpkg::Options::="--force-confmiss" install --reinstall netbase
 
 COPY . .
 
-WORKDIR /Miroir/reflection/
+WORKDIR /Miroir/backend/
 
-CMD python3 send_data.py
+ENV DEVICE cpu
+
+CMD python3 main.py

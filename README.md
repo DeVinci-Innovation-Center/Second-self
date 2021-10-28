@@ -1,5 +1,7 @@
 # Second Self
 
+<img src="docs/imgs/mirror.png">
+
 ## Description
 
 Second Self is an augmented reality platform based on an augmented mirror: a mirror on which information can be displayed. This project uses an augmented mirror with the Intel D435, a depth and color camera. Using this camera and the pose estimation library mediapipe, a user standing in front of the mirror can interact with it using gestures.<br/><br/>
@@ -54,14 +56,16 @@ Use `make open` to see the result on your machine or `make open_ssh` in a ssh co
 
 ## Ressources:
 
-### Projects :
 - https://github.com/openpifpaf/openpifpaf
-- https://github.com/Daniil-Osokin/lightweight-human-pose-estimation.pytorch
 - https://google.github.io/mediapipe/solutions/hands.html
 - https://google.github.io/mediapipe/solutions/holistic.html
-- https://github.com/facebookresearch/detectron2/tree/master/projects/DensePose
-
-### Libraries:
 - https://github.com/IntelRealSense/librealsense/
 - https://github.com/socketio/socket.io
 - https://p5js.org/
+
+## TODOS
+
+- Check keypoint visibillity
+- Improve danse module controls
+- Different menu type
+-

@@ -55,7 +55,7 @@ DEBUG_DATA = False
 
 def normalize_data(data: List[List]) -> List[List]:
     """Normalize the data to fit the hand sign inout data"""
-    return [[x / WIDTH, y / HEIGHT] for x, y in data]
+    return [[x / WIDTH, y / HEIGHT] for x, y, *_ in data]
 
 
 def lerp(P1, P2, f):

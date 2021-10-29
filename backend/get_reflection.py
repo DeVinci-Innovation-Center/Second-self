@@ -1,20 +1,16 @@
-import numpy as np
-import pyrealsense2 as rs
 import math
 from typing import List
+
+import numpy as np
+import pyrealsense2 as rs
 
 theta = math.radians(13.8)
 
 
 def get_depth(point: list, depth_frame, depth_radius: int) -> float:
+    """Gets the depth of a pixel using the points around it"""
     x = min(max(int(point[0]), 0), len(depth_frame[0]))
     y = min(max(int(point[1]), 0), len(depth_frame))
-    # x = int(point[0])
-    # y = int(point[1])
-    # x = x if x >= 0 else 0
-    # x = x if x < len(depth_frame[0]) else len(depth_frame[0])
-    # y = y if y >= 0 else 0
-    # y = y if y < len(depth_frame) else len(depth_frame)
 
     try:
         return np.float64(
@@ -38,6 +34,7 @@ def map_location(
     point_depth: int,
     video_provider,
 ) -> List[int]:
+    """Transforms pixel to world coordinates"""
     da = eyes_depth
     db = point_depth
     xa, ya, za = eyes_coordinates
@@ -77,7 +74,7 @@ def project(
         video_provider.depth_intrinsics, eyes_position, eyes_depth
     )
 
-    for i, point in enumerate(points):
+    for point in points:
         if bool(point):
             point_depth = (
                 get_depth(point, depth_frame, depth_radius) if ref == 0 else ref
@@ -90,6 +87,7 @@ def project(
                     point_depth=point_depth,
                     video_provider=video_provider,
                 )
+                + point[2:]
                 + [point_depth]
             )
     return projected

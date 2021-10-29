@@ -40,44 +40,48 @@ def find_all_poses(holistic, frame, window):
     body_landmarks = []
 
     if results.pose_landmarks:
-        for j, landmark in enumerate(results.pose_landmarks.landmark):
+        for landmark in results.pose_landmarks.landmark:
             body_landmarks.append(
                 [
                     min_width + int(landmark.x * image.shape[1]),
                     int(landmark.y * image.shape[0]),
+                    landmark.visibility
                 ]
             )
 
     faces_landmarks = []
 
     if results.face_landmarks:
-        for j, landmark in enumerate(results.face_landmarks.landmark):
+        for landmark in results.face_landmarks.landmark:
             faces_landmarks.append(
                 [
                     min_width + int(landmark.x * image.shape[1]),
                     int(landmark.y * image.shape[0]),
+                    landmark.visibility
                 ]
             )
 
     left_hands_landmarks = []
 
     if results.left_hand_landmarks:
-        for j, landmark in enumerate(results.left_hand_landmarks.landmark):
+        for landmark in results.left_hand_landmarks.landmark:
             left_hands_landmarks.append(
                 [
                     min_width + int(landmark.x * image.shape[1]),
                     int(landmark.y * image.shape[0]),
+                    landmark.visibility
                 ]
             )
 
     right_hands_landmarks = []
 
     if results.right_hand_landmarks:
-        for j, landmark in enumerate(results.right_hand_landmarks.landmark):
+        for landmark in results.right_hand_landmarks.landmark:
             right_hands_landmarks.append(
                 [
                     min_width + int(landmark.x * image.shape[1]),
                     int(landmark.y * image.shape[0]),
+                    landmark.visibility
                 ]
             )
 

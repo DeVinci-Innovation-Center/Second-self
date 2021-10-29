@@ -45,7 +45,7 @@ def find_all_poses(holistic, frame, window):
                 [
                     min_width + int(landmark.x * image.shape[1]),
                     int(landmark.y * image.shape[0]),
-                    landmark.visibility
+                    round(landmark.visibility, 2)
                 ]
             )
 
@@ -57,7 +57,7 @@ def find_all_poses(holistic, frame, window):
                 [
                     min_width + int(landmark.x * image.shape[1]),
                     int(landmark.y * image.shape[0]),
-                    landmark.visibility
+                    round(landmark.visibility, 2)
                 ]
             )
 
@@ -69,7 +69,7 @@ def find_all_poses(holistic, frame, window):
                 [
                     min_width + int(landmark.x * image.shape[1]),
                     int(landmark.y * image.shape[0]),
-                    landmark.visibility
+                    round(landmark.visibility, 2)
                 ]
             )
 
@@ -81,7 +81,7 @@ def find_all_poses(holistic, frame, window):
                 [
                     min_width + int(landmark.x * image.shape[1]),
                     int(landmark.y * image.shape[0]),
-                    landmark.visibility
+                    round(landmark.visibility, 2)
                 ]
             )
 

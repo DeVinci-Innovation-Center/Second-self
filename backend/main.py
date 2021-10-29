@@ -370,14 +370,14 @@ class HolisticProvider(threading.Thread):
                         if DEBUG_TIME:
                             flag_1 = time.time()
                             print(f"Inference: {(flag_1 - start_t)*1000} ms")
-                        eyes = data["body_pose"][0]
+                        eyes = data["body_pose"][0][0:2]
 
                         body = project(
                             points=data["body_pose"],
                             eyes_position=eyes,
                             video_provider=self.feed,
                             depth_frame=depth,
-                            depth_radius=4,
+                            depth_radius=2,
                         )
                         global_data["body_pose"] = body
 
@@ -387,7 +387,7 @@ class HolisticProvider(threading.Thread):
                             video_provider=self.feed,
                             depth_frame=depth,
                             depth_radius=2,
-                            ref=body[15][-1],
+                            ref=body[15],
                         )
 
                         if len(data["right_hand_pose"]) > 0:
@@ -402,7 +402,7 @@ class HolisticProvider(threading.Thread):
                             video_provider=self.feed,
                             depth_frame=depth,
                             depth_radius=2,
-                            ref=body[16][-1],
+                            ref=body[16],
                         )
 
                         if len(data["left_hand_pose"]) > 0:
@@ -417,7 +417,7 @@ class HolisticProvider(threading.Thread):
                             video_provider=self.feed,
                             depth_frame=depth,
                             depth_radius=2,
-                            ref=body[2][-1],
+                            ref=body[2],
                         )
 
                         if DEBUG_TIME:

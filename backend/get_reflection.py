@@ -76,18 +76,19 @@ def project(
 
     for point in points:
         if bool(point):
+            visibility = point[2] if ref == 0 else ref[3]
             point_depth = (
-                get_depth(point, depth_frame, depth_radius) if ref == 0 else ref
+                get_depth(point[0:2], depth_frame, depth_radius) if ref == 0 else ref[2]
             )  # Depth of the point
             projected.append(
                 map_location(
-                    point=point,
+                    point=point[0:2],
                     eyes_depth=eyes_depth,
                     eyes_coordinates=eyes_coordinates,
                     point_depth=point_depth,
                     video_provider=video_provider,
                 )
-                + point[2:]
-                + [point_depth]
+                + [int(point_depth)]
+                + [visibility]
             )
     return projected

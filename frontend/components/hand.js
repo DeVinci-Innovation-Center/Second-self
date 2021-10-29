@@ -169,7 +169,7 @@ let Hands = (sketch) => {
             this.junctions.forEach(parts => {
                 parts.forEach(pair => {
                     try {
-                        if (this.hand_pose[i][2] > 0.5 && this.hand_pose_t[pair[0]][1] > 0 && this.hand_pose_t[pair[1]][1] > 0) {
+                        if (this.hand_pose[pair[0]][3] >= 0.9 && this.hand_pose_t[pair[0]][1] > 0 && this.hand_pose_t[pair[1]][1] > 0) {
                             sketch.line(this.hand_pose_t[pair[0]][0], this.hand_pose_t[pair[0]][1], this.hand_pose_t[pair[1]][0], this.hand_pose_t[pair[1]][1]);
                         }
                     } catch (e) {

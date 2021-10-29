@@ -197,7 +197,7 @@ let Pose = (sketch) => {
             this.junctions.forEach(parts => {
                 parts.forEach(pair => {
                     try {
-                        if (transposed[pair[0]][1] > 0 && transposed[pair[1]][1] > 0 &&
+                        if (this.body_pose[pair[0]][3] >= 0.9 && transposed[pair[0]][1] > 0 && transposed[pair[1]][1] > 0 &&
                             (sketch.show_head || (pair[1] > 10 && pair[0] > 10)) &&
                             (sketch.show_wrist || (![17, 18, 19, 20].includes(pair[0]) && ![17, 18, 19, 20, 21, 22].includes(pair[1])))
                         ) {

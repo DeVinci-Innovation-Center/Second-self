@@ -22,6 +22,21 @@ let screenwidth = 392.85; //millimeters
 let screenheight = 698.4;
 
 let global_data = {};
+
+let scenarios = {
+    "intro": {
+        "init": intro_sc_init,
+        "loop": intro_sc,
+        "end": intro_sc_end
+    },
+    "main": {
+        "init": main_sc_init(),
+        "loop": main_sc(),
+        "end": main_sc_end()
+    }
+}
+
+let scenario = "main"
 // let available = true;
 
 // function preload(){
@@ -43,36 +58,42 @@ function setup() {
             global_data[key] = data[key];
           }
     });
+
+    scenario[scenario].init()
 }
 
 function draw() {
-    background(0);
-    if (started) {
-        modules.forEach(module => {
-            if (module.activated) {
-                if(module.to_update && global_data != {}){
-                    module.update(global_data);
-                }
-                module.show();
-            }
-        });
-        selection();
-        socket.emit("update", true);
-        // if(available){
-        //     available = false;
-        // }
-    }
+    scenario[scenario].loop()
 }
 
+// function selection(){
+//     if (hands.left_hand.hand_pose_t[8] !== undefined &&
+//         hands.left_hand.hand_pose_t[5] !== undefined &&
+//         hands.right_hand.hand_pose_t[8] !== undefined) {
+//         if (
+//             hands.left_hand.hand_pose_t[8][0] - hands.left_hand.hand_pose_t[5][0] > 80 && (
+//             dance.dance.init === undefined ||
+//             !dance.dance.init)
+//             ){
+//             selector.display_bubbles = true;
+//         }
+//         else{
+//             selector.display_bubbles = false;
+//         }
+//         selector.mx = hands.left_hand.hand_pose_t[8][0];
+//         selector.my = hands.left_hand.hand_pose_t[8][1];
+//         selector.cursor = hands.right_hand.hand_pose_t[8];
+
+//     }
+//     // if(hands.right_hand.hand_pose_t[8] != undefined){
+//     //     pikachu.cursor = hands.right_hand.hand_pose_t[8].copyWithin().concat([100]);
+//     // }
+// }
+
 function selection(){
-    if (hands.left_hand.hand_pose_t[8] !== undefined &&
-        hands.left_hand.hand_pose_t[5] !== undefined &&
-        hands.right_hand.hand_pose_t[8] !== undefined) {
-        if (
-            hands.left_hand.hand_pose_t[8][0] - hands.left_hand.hand_pose_t[5][0] > 80 && (
-            dance.dance.init === undefined ||
-            !dance.dance.init)
-            ){
+    if ("left_hand_sign" in global_data) {
+        if (global_data["left_hand_sign"][0] == "OPEN_HAND" && global_data["left_hand_sign"][1] > 0.8 && !dance.dance.init)
+        {
             selector.display_bubbles = true;
         }
         else{
@@ -83,10 +104,8 @@ function selection(){
         selector.cursor = hands.right_hand.hand_pose_t[8];
 
     }
-    // if(hands.right_hand.hand_pose_t[8] != undefined){
-    //     pikachu.cursor = hands.right_hand.hand_pose_t[8].copyWithin().concat([100]);
-    // }
 }
+
 
 function reshape() {
     resizeCanvas(windowWidth, windowHeight);

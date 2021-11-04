@@ -93,7 +93,9 @@ function draw() {
 // }
 
 function selection(){
-    if ("left_hand_sign" in global_data) {
+    if (hands.left_hand.hand_pose_t[8] !== undefined &&
+        hands.right_hand.hand_pose_t[8] !== undefined &&
+        "left_hand_sign" in global_data) {
         if (global_data["left_hand_sign"][0] == "OPEN_HAND" && global_data["left_hand_sign"][1] > 0.8 && !dance.dance.init)
         {
             selector.display_bubbles = true;

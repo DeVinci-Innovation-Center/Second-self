@@ -23,20 +23,9 @@ let screenheight = 698.4;
 
 let global_data = {};
 
-let scenarios = {
-    "intro": {
-        "init": intro_sc_init,
-        "loop": intro_sc,
-        "end": intro_sc_end
-    },
-    "main": {
-        "init": main_sc_init(),
-        "loop": main_sc(),
-        "end": main_sc_end()
-    }
-}
+let scenarios;
 
-let scenario = "main"
+let scenario = "main";
 // let available = true;
 
 // function preload(){
@@ -59,11 +48,24 @@ function setup() {
           }
     });
 
-    scenario[scenario].init()
+    scenarios = {
+        "intro": {
+            "init": intro_sc_init,
+            "loop": intro_sc,
+            "end": intro_sc_end
+        },
+        "main": {
+            "init": main_sc_init,
+            "loop": main_sc,
+            "end": main_sc_end
+        }
+    };
+
+    scenario[scenario].init();
 }
 
 function draw() {
-    scenario[scenario].loop()
+    scenario[scenario].loop();
 }
 
 // function selection(){

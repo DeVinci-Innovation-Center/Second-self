@@ -61,11 +61,11 @@ function setup() {
         }
     };
 
-    scenario[scenario].init();
+    scenarios[scenario].init();
 }
 
 function draw() {
-    scenario[scenario].loop();
+    scenarios[scenario].loop();
 }
 
 // function selection(){

@@ -59,9 +59,12 @@ let Dance = (sketch) => {
 
             this.diff = 0; // The lower, the closer the moves are
             this.limit = 120; // if this.diff < this.limit, it goes on
+            this.time = 0;
+            this.timelimit = 3600;
         }
 
         reset() {
+            this.time = 0;
             this.moves_index = 0;
             this.video_index = 0;
             this.diff = 0;
@@ -114,7 +117,6 @@ let Dance = (sketch) => {
                 sketch.selfCanvas.clear();
                 sketch.activated = false;
                 this.reset();
-                console.log("EXECECECEC");
                 return;
             }
             if (this.body_pose.length > 0) {
@@ -151,6 +153,13 @@ let Dance = (sketch) => {
                         mirror_nose_reference[1] - video_nose_reference[1] * this.ratio
                     ];
                 } else {
+                    this.time++;
+                    if(this.time > this.timelimit){
+                        sketch.selfCanvas.clear();
+                        sketch.activated = false;
+                        this.reset();
+                        return;
+                    }
                     if (this.moves_index in this.moves) {
                         let distances = [];
                         for (let i = 0; i < this.indexes_to_study.length; i++) {
@@ -166,6 +175,7 @@ let Dance = (sketch) => {
                         this.diff = distances.reduce((partial_sum, a) => partial_sum + a,0) / distances.length; //Mean of kpts differences
                         if (this.diff < this.limit){
                             this.moves_index++;
+                            this.time = 0;
                         }
                     } else {
                         this.moves_index++;

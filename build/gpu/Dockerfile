@@ -112,10 +112,8 @@ WORKDIR /Miroir
 
 # Copying and launching the backend
 
-COPY . .
-
-WORKDIR /Miroir/backend/
+COPY backend/reflection .
 
 ENV DEVICE gpu
 
-CMD DISPLAY=:0 python3 main.py
+CMD python3 main.py

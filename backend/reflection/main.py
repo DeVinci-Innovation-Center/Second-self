@@ -84,10 +84,10 @@ class IntelVideoReader:
         self.height = HEIGHT
 
         config.enable_stream(
-            rs.stream.depth, self.width, self.height, rs.format.z16, 60
+            rs.stream.depth, self.width, self.height, rs.format.z16, 30
         )
         config.enable_stream(
-            rs.stream.color, self.width, self.height, rs.format.bgr8, 60
+            rs.stream.color, self.width, self.height, rs.format.bgr8, 30
         )
 
         profile = self.pipe.start(config)
@@ -197,7 +197,7 @@ class BodyProvider(threading.Thread):
         self.feed = feed
 
     def run(self):
-        import get_body_pose as gbp  # Import the code from another python file if the cwd
+        import components.get_body_pose as gbp  # Import the code from another python file if the cwd
 
         print(
             """
@@ -237,8 +237,8 @@ class HandsProvider(threading.Thread):
     """
 
     def __init__(self, threadID, feed):
-        import get_hand_gesture as gh
-        import get_hand_sign as ghs
+        import components.get_hand_gesture as gh
+        import components.get_hand_sign as ghs
 
         threading.Thread.__init__(self)
         self.threadID = threadID
@@ -247,7 +247,7 @@ class HandsProvider(threading.Thread):
         self.sign_provider = ghs.init()
 
     def run(self):
-        import get_hand_gesture as gh
+        import components.get_hand_gesture as gh
 
         # import get_hand_sign as ghs
 
@@ -290,7 +290,7 @@ class FaceProvider(threading.Thread):
     """
 
     def __init__(self, threadID, feed):
-        import get_face_mesh as gf
+        import components.get_face_mesh as gf
 
         threading.Thread.__init__(self)
         self.threadID = threadID
@@ -298,7 +298,7 @@ class FaceProvider(threading.Thread):
         self.faces = gf.init()
 
     def run(self):
-        import get_face_mesh as gf
+        import components.get_face_mesh as gf
 
         print(
             """
@@ -333,8 +333,8 @@ class HolisticProvider(threading.Thread):
     """
 
     def __init__(self, threadID, feed):
-        import get_hand_sign as ghs
-        import get_holistic as gh
+        import components.get_hand_sign as ghs
+        import components.get_holistic as gh
 
         threading.Thread.__init__(self)
         self.threadID = threadID
@@ -344,9 +344,9 @@ class HolisticProvider(threading.Thread):
 
     def run(self):
         # * Home made hand signs : https://github.com/Thomas-Jld/gesture-recognition
-        import get_hand_sign as ghs
-        import get_holistic as gh
-        from get_reflection import project
+        import components.get_hand_sign as ghs
+        import components.get_holistic as gh
+        from components.get_reflection import project
 
         print(
             """
@@ -361,7 +361,6 @@ class HolisticProvider(threading.Thread):
                 start_t = time.time()
 
                 if color is not None and depth is not None:
-                    # print(f'color: ' + :color)
                     data = gh.find_all_poses(self.holistic, color, WINDOW)
                     if DEBUG_DATA:
                         print(data)
@@ -545,8 +544,8 @@ class PifpafProvider(threading.Thread):
 
     def __init__(self, threadID, feed):
         # * Home made hand signs : https://github.com/Thomas-Jld/gesture-recognition
-        import get_hand_sign as ghs
-        import get_pifpaf as gpp
+        import components.get_hand_sign as ghs
+        import components.get_pifpaf as gpp
 
         threading.Thread.__init__(self)
         self.threadID = threadID
@@ -556,9 +555,9 @@ class PifpafProvider(threading.Thread):
         self.data = {}
 
     def run(self):
-        import get_hand_sign as ghs
-        import get_pifpaf as gpp
-        from get_reflection import project
+        import components.get_hand_sign as ghs
+        import components.get_pifpaf as gpp
+        from components.get_reflection import project
 
         print(
             """

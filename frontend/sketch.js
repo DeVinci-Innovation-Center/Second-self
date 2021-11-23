@@ -22,10 +22,11 @@ let screenwidth = 392.85; //millimeters
 let screenheight = 698.4;
 
 let global_data = {};
+let recieved = false;
 
 let scenarios;
-
 let scenario = "main";
+
 // let available = true;
 
 // function preload(){
@@ -39,10 +40,17 @@ function setup() {
 
     setTimeout(reshape, 1000);
 
-    socket = io.connect('http://0.0.0.0:5000');
+    socket = io.connect('http://0.0.0.0:5000', {
+        cors: {
+          origin: "http://0.0.0.0:5000",
+          methods: ["GET", "POST"]
+        },
+        transports: ["websocket"]
+      });
 
     socket.emit("update", true);
     socket.on("global_data", (data) => {
+        recieved = true;
         for (let key in data) {
             global_data[key] = data[key];
           }
@@ -195,7 +203,7 @@ function choseAction(opt, action){
             else hands.selfCanvas.hide();
             break;
 
-        case  "Dance n°1":
+        case  "Dance":
             if(action){
                 dance.activated = false;
                 dance.selfCanvas.clear();
@@ -206,13 +214,8 @@ function choseAction(opt, action){
             }
             break;
 
-        case "Dance n°2":
-            if(action){
-                // Launch dance
-            }
-            else{
-                // Stop dance
-            }
+        case  "S.L.R":
+            socket.emit("slr", true);
             break;
 
     }

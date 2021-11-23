@@ -1,5 +1,3 @@
-
-
 function main_sc_init(){
 
 }
@@ -16,7 +14,10 @@ function main_sc(){
             }
         });
         selection();
-        socket.emit("update", true);
+        if (recieved){
+            socket.emit("update", true);
+            recieved = false;
+        }
     }
 }
 

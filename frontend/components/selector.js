@@ -18,7 +18,7 @@ let Selector = (sketch) => {
 
     let description = `This is the alpha version of an interractive mirror. Place yourself at about 1m50 for a better experience. Use your left hand to display the menu.`
 
-    let icons = ["info.svg", "disco.svg", "settings.svg"];
+    let icons = ["info.svg", "play.svg", "settings.svg"];
 
     sketch.set = (p1, p2, w, h) => {
         sketch.width = w;
@@ -39,7 +39,7 @@ let Selector = (sketch) => {
             150,
             [
                 description,
-                ["Dance n°2", "Dance n°1"],
+                ["Dance", "S.L.R"],
                 ["Show Face", "Show Clock", "Show Pose", "Show Hands"],
             ],
             icons
@@ -157,7 +157,7 @@ let Selector = (sketch) => {
             }
             if (this.per > 0.1) {
                 sketch.ellipse(this.rx, this.ry, this.r * this.per);
-                sketch.image(this.icon, this.rx, this.ry, this.r * this.per * 2/3, this.r * this.per *2/3);
+                sketch.image(this.icon, this.rx, this.ry, this.r * this.per * 1/2, this.r * this.per * 1/2);
             }
             if (this.selected) {
                 for (let i = 0; i < this.bars.length; i++) {
@@ -228,6 +228,7 @@ let Selector = (sketch) => {
             this.h = this.d;
             this.choice = choice;
             this.parent = parent;
+            this.hidden = true;
             this.selected = true;
 
             this.c = 0;
@@ -237,8 +238,9 @@ let Selector = (sketch) => {
             this.selection_time = 40;
         }
 
+
         show() {
-            if (this.parent.selected && this.per > 0.1) {
+            if ((this.parent.selected || !this.hidden) && this.per > 0.1) {
                 sketch.stroke(255);
                 sketch.strokeWeight(2);
                 sketch.fill(0);
@@ -263,13 +265,14 @@ let Selector = (sketch) => {
             }
         }
 
+
         update(x, y) {
             this.x = x;
             this.y = y;
             this.rx = this.x + 3 * this.per * this.d / 2;
             this.ry = this.y + this.per * this.yoffset - sketch.sliding;
 
-            if (!this.parent.selected || !sketch.display_bubbles) {
+            if ((!this.parent.selected && this.hidden) || !sketch.display_bubbles) {
                 this.per *= this.mul;
             } else {
                 if (this.per < 1) {

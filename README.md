@@ -68,4 +68,4 @@ Use `make open` to see the result on your machine or `make open_ssh` in a ssh co
 - Check keypoint visibillity
 - Improve danse module controls
 - Different menu type
--
+- Vocal recognition

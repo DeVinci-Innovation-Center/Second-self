@@ -1,3 +1,5 @@
+from typing import List
+
 BODY_KEYPOINTS = [
     "nose",
     "left_eye_inner",
@@ -63,3 +65,8 @@ BODY_LINKS = [
         [28, 32],
     ],
 ]
+
+
+def normalize_data(data: List[List], width, height) -> List[List]:
+    """Normalize the data to fit the hand sign inout data"""
+    return [[x / width, y / height] for x, y, *_ in data]

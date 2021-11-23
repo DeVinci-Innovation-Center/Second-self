@@ -15,7 +15,7 @@ let Dance = (sketch) => {
         sketch.selfCanvas = sketch.createCanvas(sketch.width, sketch.height).position(sketch.x, sketch.y);
         // sketch.selfCanvas.hide();
 
-        sketch.dance = new DanceLesson("dance02");
+        // sketch.dance = new DanceLesson("dance02");
 
         sketch.colorMode(HSB);
     };

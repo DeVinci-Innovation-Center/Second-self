@@ -1,0 +1,69 @@
+version: '2.0'
+config:
+  store_entities_as_slots: true
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
+intents:
+- greet:
+    use_entities: []
+- bot_challenge:
+    use_entities: []
+- launch:
+    use_entities: true
+- activate:
+    use_entities: true
+- deactivate:
+    use_entities: true
+entities:
+- known_launch_module
+- unknown_launch_module
+- known_activate_module
+- unknown_activate_module
+slots:
+  known_launch_module:
+    type: rasa.shared.core.slots.CategoricalSlot
+    initial_value: ''
+    auto_fill: true
+    influence_conversation: true
+    values:
+    - danse
+  unknown_launch_module:
+    type: rasa.shared.core.slots.TextSlot
+    initial_value: ''
+    auto_fill: true
+    influence_conversation: true
+  known_activate_module:
+    type: rasa.shared.core.slots.CategoricalSlot
+    initial_value: ''
+    auto_fill: true
+    influence_conversation: true
+    values:
+    - corps
+    - main
+    - tête
+  unknown_activate_module:
+    type: rasa.shared.core.slots.TextSlot
+    initial_value: ''
+    auto_fill: true
+    influence_conversation: true
+responses:
+  utter_greet:
+  - text: '#001 Bonjour.'
+  utter_iamamirror:
+  - text: "#001 Je suis un l'assistant virtuel d'un miroir créé par Thomas JULDO avec l'aide de Dimitri VINET."
+  utter_launch_confirmation:
+  - text: '#101 Je lance le module {known_launch_module}'
+  utter_launch_fail:
+  - text: '#102 Je ne connais pas ce module.'
+  utter_activate_confirmation:
+  - text: "#201 J'active le module {known_activate_module}"
+  utter_activate_fail:
+  - text: '#202 Je ne connais pas ce module.'
+  utter_deactivate_confirmation:
+  - text: '#301 Je desactive le module {known_activate_module}'
+  utter_deactivate_fail:
+  - text: '#302 Je ne connais pas ce module.'
+actions: []
+forms: {}
+e2e_actions: []

@@ -1,0 +1,66 @@
+version: "2.0"
+nlu:
+- intent: greet
+  examples: |
+    - bonsoir miroir
+    - bonjour miroir
+    - salut miroir
+    - hello miroir
+- intent: bot_challenge
+  examples: |
+    - Miroir, qu'es-tu ?
+    - Miroir, es-tu un assisstant ?
+    - Miroir, es-tu une IA ?
+- intent: launch
+  examples: |
+    - peux tu lancer le module de [danse](known_launch_module)?
+    - peux tu lancer le module des [pieds](unknown_launch_module)?
+    - peux tu lancer le module des [fitness](unknown_launch_module)?
+    - peux tu demarrer le module de [danse](known_launch_module)?
+    - peux tu demarrer le module des [pieds](unknown_launch_module)?
+    - lance le module de [danse](known_launch_module)
+    - lance le module des [pieds](unknown_launch_module)
+    - mets le module de [danse](known_launch_module)
+    - mets le module des [pieds](unknown_launch_module)
+    - mets la [danse](known_launch_module)
+    - mets les [pieds](unknown_launch_module)
+    - peux tu activer la [danse](known_launch_module)?
+    - peux tu activer les [mains](unknown_launch_module)?
+    - active les [danse](known_launch_module)
+    - active la [mains](unknown_launch_module)
+- intent: activate
+  examples: |
+    - peux tu afficher les [mains](known_activate_module)?
+    - peux tu afficher les [tête](known_activate_module)?
+    - peux tu afficher le [corps](known_activate_module)?
+    - peux tu afficher la [danse](unknown_activate_module)?
+    - affiche les [mains](known_activate_module)
+    - affiche la [tête](known_activate_module)
+    - affiche le [corps](known_activate_module)
+    - affiche la [danse](unknown_activate_module)
+    - peux tu lancer les [mains](known_activate_module)?
+    - peux tu lancer les [danse](unknown_activate_module)?
+    - lance les [mains](known_activate_module)
+    - lance la [danse](unknown_activate_module)
+    - peux tu activer les [mains](known_activate_module)?
+    - peux tu activer les [danse](unknown_activate_module)?
+    - active les [mains](known_activate_module)
+    - active la [danse](unknown_activate_module)
+- intent: deactivate
+  examples: |
+    - peux tu masquer les [mains](known_activate_module)?
+    - peux tu masquer les [tête](known_activate_module)?
+    - peux tu masquer le [corps](known_activate_module)?
+    - peux tu masquer la [danse](unknown_activate_module)?
+    - masque les [mains](known_activate_module)
+    - masque la [tête](known_activate_module)
+    - masque le [corps](known_activate_module)
+    - masque la [danse](unknown_activate_module)
+    - peux tu cacher les [mains](known_activate_module)?
+    - peux tu cacher la [danse](unknown_activate_module)?
+    - cache les [mains](known_activate_module)
+    - cache la [danse](unknown_activate_module)
+    - peux tu desactiver les [mains](known_activate_module)?
+    - peux tu desactiver la [danse](unknown_activate_module)?
+    - desactive les [mains](known_activate_module)
+    - desactive la [danse](unknown_activate_module)

@@ -1,0 +1,66 @@
+version: "2.0"
+stories:
+- story: greetings
+  steps:
+  - intent: greet
+  - action: utter_greet
+- story: challenge_bot
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamamirror
+- story: launch_sucess
+  steps:
+  - intent: launch
+    entities:
+    - known_launch_module: danse
+  - action: utter_launch_confirmation
+- story: launch_fail
+  steps:
+  - intent: launch
+    entities:
+    - unknown_launch_module: pied
+  - action: utter_launch_fail
+- story: activate_sucess
+  steps:
+  - intent: activate
+    entities:
+    - known_activate_module: corps
+  - action: utter_activate_confirmation
+- story: activate_fail
+  steps:
+  - intent: activate
+    entities:
+    - unknown_activate_module: pied
+  - action: utter_activate_fail
+- story: deactivate_sucess
+  steps:
+  - intent: deactivate
+    entities:
+    - known_activate_module: corps
+  - action: utter_deactivate_confirmation
+- story: deactivate_fail
+  steps:
+  - intent: deactivate
+    entities:
+    - unknown_activate_module: pied
+  - action: utter_deactivate_fail
+- story: mispell
+  steps:
+  - intent: deactivate
+    entities:
+    - known_activate_module: mainns
+  - slot_was_set:
+    - known_activate_module: mains
+  - action: utter_deactivate_confirmation
+  - intent: deactivate
+    entities:
+    - known_activate_module: main
+  - slot_was_set:
+    - known_activate_module: mains
+  - action: utter_deactivate_confirmation
+  - intent: deactivate
+    entities:
+    - known_activate_module: crop
+  - slot_was_set:
+    - known_activate_module: corps
+  - action: utter_deactivate_confirmation

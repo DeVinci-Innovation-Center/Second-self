@@ -33,17 +33,34 @@ let Selector = (sketch) => {
 
         sketch.imageMode(CENTER);
 
-        sketch.menu = new Menu(
-            sketch.x,
-            sketch.y,
-            150,
-            [
-                description,
-                ["Dance", "S.L.R"],
-                ["Show Face", "Show Clock", "Show Pose", "Show Hands"],
-            ],
-            icons
-        );
+        let demo_dance = new SelectBar("Dance", 300, 75);
+        let demo_slr = new SelectBar("S.L.R", 300, 75);
+        let demo_bubble = new Bubble("play.svg", 150);
+        demo_bubble.add(demo_dance, 1);
+        demo_bubble.add(demo_slr, 2);
+
+
+        let description_panel = new InfoPanel(description, 300, 300);
+        let description_bubble = new Bubble("info.svg", 150);
+        description_bubble.add(description_panel, 2);
+
+
+        let settings_clock = new SelectBar("Show Clock", 300, 75);
+        let settings_face = new SelectBar("Show Face", 300, 75);
+        let settings_pose = new SelectBar("Show Pose", 300, 75);
+        let settings_hands = new SelectBar("Show Hands", 300, 75);
+        let settings_bubble = new Bubble("settings.svg", 150);
+        settings_bubble.add(settings_clock, 1);
+        settings_bubble.add(settings_face, 2);
+        settings_bubble.add(settings_pose, 3);
+        settings_bubble.add(settings_hands, 4);
+
+
+        sketch.menu = new Menu(sketch.x, sketch.y, 150);
+        sketch.menu.add(demo_bubble, 1);
+        sketch.menu.add(description_bubble, 2);
+        sketch.menu.add(settings_bubble, 3);
+
 
         sketch.activated = true;
     };
@@ -59,18 +76,22 @@ let Selector = (sketch) => {
 
 
     class Menu {
-        constructor(x, y, d, choices, icons) {
+        constructor(x, y, d) {
             this.x = x;
             this.y = y;
             this.d = d;
-            this.choices = choices;
 
-            this.slots = [0, -this.d, this.d, -2 * this.d, 2 * this.d];
+            this.slots = [-2 * this.d, -this.d, 0, this.d, 2 * this.d];
             this.bubbles = [];
+        }
 
-            for (let i = 0; i < this.choices.length; i++) {
-                this.bubbles.push(new Bubble(this.x, this.y, this.slots[i], this.d, this.choices[i], this, icons[i]));
-            }
+        add(element, slot) {
+            element.x = this.x;
+            element.y = this.y;
+            element.d = this.d;
+            element.slide = this.slots[slot];
+            element.parent = this;
+            this.bubbles.push(element);
         }
 
         unselect() {
@@ -98,53 +119,44 @@ let Selector = (sketch) => {
     }
 
     class Bubble {
-        constructor(x, y, slide, d, choice, parent, icon) {
-            this.x = x;
-            this.y = y;
-            // this.angle = angle;
-            this.slide = slide;
-            this.rx = this.x;
-            this.ry = this.y;
+        constructor(icon, d) {
+            this.icon = sketch.loadImage("components/icons/" + icon);
             this.d = d;
-            this.choice = choice;
+
+
+            this.x = 0;
+            this.y = 0;
+            this.yoffset = 0;
+            this.parent = undefined;
+            // this.angle = angle;
+
+
+            this.rx = 0;
+            this.ry = 0;
             this.r = this.d / 2;
             this.per = 0;
             this.mul = 0.92;
             this.c = 0;
             this.selected = false;
-            this.parent = parent;
 
-            this.slots = [0, -3 * this.d / 4, 3 * this.d / 4, 3 * this.d / 2, -3 * this.d / 2, 2 * this.d];
+            this.slots = [
+                - this.d * 3 / 2,
+                - this.d * 3 / 4,
+                0,
+                this.d * 3 / 4,
+                this.d * 3 / 2,
+                2 * this.d
+            ];
+
             this.bars = [];
-            this.icon = sketch.loadImage("components/icons/" + icon);
+        }
 
-            if (typeof (this.choice) == "object") {
-                for (let i = 0; i < this.choice.length; i++) {
-                    this.bars.push(
-                        new SelectBar(
-                            this.rx,    // x
-                            this.ry,    // y
-                            this.slots[i],  // y offset
-                            this.d,
-                            this.choice[i],
-                            this
-                        )
-                    );
-                }
-
-            } else if (typeof (this.choice) == "string") {
-                this.bars.push(
-                    new InfoPanel(
-                        this.rx,     // x
-                        this.ry,     // y
-                        this.d * 2,    // w
-                        this.d * 2,    // h
-                        this.d * 0.5,    // xoffset
-                        this.choice, //content
-                        this         //parent
-                    )
-                );
-            }
+        add(element, slot) {
+            element.x = this.rx;
+            element.y = this.ry;
+            element.yoffset = this.slots[slot];
+            element.parent = this;
+            this.bars.push(element);
         }
 
         show() {
@@ -170,7 +182,7 @@ let Selector = (sketch) => {
             this.x = lerp(this.x, x, 0.6);
             this.y = lerp(this.y, y, 0.6);
             this.rx = this.x + this.per * this.d / 2;
-            this.ry = this.y + this.per * this.slide - sketch.sliding;
+            this.ry = this.y + this.per * this.yoffset - sketch.sliding;
             if (!sketch.display_bubbles) {
                 this.per *= this.mul;
             } else {
@@ -195,8 +207,8 @@ let Selector = (sketch) => {
                             //sketch.sliding = this.slide;
                             this.selected = true;
 
-                            if (typeof (this.choice) !== "object") {
-                                choseAction(this.choice);
+                            if (typeof (this.name) !== "object") {
+                                choseAction(this.name);
                             }
                         }
                     } else {
@@ -219,15 +231,18 @@ let Selector = (sketch) => {
     }
 
     class SelectBar {
-        constructor(x, y, yoffset, d, choice, parent) {
-            this.x = x;
-            this.y = y;
-            this.yoffset = yoffset;
-            this.d = d / 2;
-            this.w = this.d * 4;
-            this.h = this.d;
+        constructor(choice, w, h) {
             this.choice = choice;
-            this.parent = parent;
+            this.w = w;
+            this.h = h;
+
+
+            this.x = 0;
+            this.y = 0;
+            this.yoffset = 0;
+            this.parent = undefined;
+
+
             this.hidden = true;
             this.selected = true;
 
@@ -344,14 +359,15 @@ let Selector = (sketch) => {
     }
 
     class InfoPanel {
-        constructor(x, y, w, h, offset, content, parent) {
-            this.x = x;
-            this.y = y;
+        constructor(content, w, h) {
+            this.content = content;
             this.w = w;
             this.h = h;
-            this.offset = offset;
-            this.content = content;
-            this.parent = parent;
+
+            this.x = 0;
+            this.y = 0;
+            this.offset = 0;
+            this.parent = undefined;
             this.size = 25;
 
             this.per = 0; // To animate the display when showing / hidding

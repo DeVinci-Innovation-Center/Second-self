@@ -203,6 +203,38 @@ class FaceProvider(threading.Thread):
             time.sleep(dt)
 
 
+class SignLaguageRecognition(threading.Thread):
+    """
+    (Special Thread)
+    * Orchestrate the Sign Language Recognition demo
+    """
+    def __init__(self, threadID):
+        threading.Thread.__init__(self)
+        self.threadID = threadID
+        self.step = 0
+        self.action = 0
+
+    def run(self):
+        print(
+        """
+        -------------------------------------
+        Sign Language Recognition running
+        -------------------------------------
+        """
+        )
+        while 1:
+            if self.step == 0: # Does nothing and waits for instructions
+                time.sleep(0.001)
+            elif self.step == 1: # Plays the example
+                pass
+            elif self.step == 2:
+                # Evaluates the performance
+                # Goes to the next action if the performance is good
+                # Back to step 1 if not the last action
+                data = data_queue.get()
+                data_queue.put(data)
+                time.sleep(0.001)
+
 class HolisticProvider(threading.Thread):
     """
     (Thread)

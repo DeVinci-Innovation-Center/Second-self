@@ -26,6 +26,8 @@ let Pose = (sketch) => {
         sketch.pose = new Body("pose");
 
         sketch.activated = true;
+
+
     };
 
     sketch.update = (data) => {

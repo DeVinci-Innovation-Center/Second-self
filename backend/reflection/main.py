@@ -1,24 +1,25 @@
+import time
+
 import eventlet
 import socketio
 
-
-from components.camera import IntelVideoReader, CameraVideoReader
-from settings import MODE, DEBUG_CAMERA, WIDTH, HEIGHT
+from components.camera import CameraVideoReader, IntelVideoReader
+from settings import DEBUG_CAMERA, HEIGHT, MODE, WIDTH
 from threads import (
-    data_queue,
-    global_data,
     BodyProvider,
-    HandsProvider,
+    DisplayResult,
     FaceProvider,
+    FrameProvider,
+    HandsProvider,
+    SignLaguageRecognition,
     HolisticProvider,
     PifpafProvider,
-    FrameProvider,
-    DisplayResult,
+    data_queue,
 )
 
-
-
-sio = socketio.Server(logger=False, cors_allowed_origins="*") # Creates the socketio server
+sio = socketio.Server(
+    logger=False, cors_allowed_origins="*"
+)  # Creates the socketio server
 app = socketio.WSGIApp(sio)
 
 color = None
@@ -26,14 +27,17 @@ depth = None
 
 client = ""
 
+
 @sio.on("update")
 def update(*_) -> None:
     """
     * Sends data to the client upon request
     """
     data = data_queue.get()
+    data_queue.put(data)
     # print(data)
     sio.emit("global_data", data)
+
 
 @sio.on("slr")
 def slr(*_) -> None:
@@ -41,7 +45,13 @@ def slr(*_) -> None:
     * Starts the Sign language recognition
     """
     print("SLR")
-    Threads[0].running = False
+    Threads[0].paused = True
+    slr_thread = SignLaguageRecognition("slr")
+    slr_thread.start()
+    while slr_thread.step == 0:
+        time.sleep(0.01)
+
+    time.sleep(0.5)
 
 
 @sio.event
@@ -59,14 +69,15 @@ if __name__ == "__main__":
         "body_pose": [False, BodyProvider],  # Body pose, requires Face mesh
         "hands_pose": [False, HandsProvider],  # Hands, requires Body pose
         "face_mesh": [False, FaceProvider],  # Face mesh
-        "holistic_pose": [
-            True,
-            HolisticProvider,
-        ],  # Holistic, Body face and hands in one
+        "holistic_pose": [True, HolisticProvider],  # Body face and hands in one
         "pifpaf_pose": [False, PifpafProvider],  # Pifpaf, Body face and hands in one
     }
 
-    cam = CameraVideoReader(WIDTH, HEIGHT) if DEBUG_CAMERA else IntelVideoReader(WIDTH, HEIGHT)
+    cam = (
+        CameraVideoReader(WIDTH, HEIGHT)
+        if DEBUG_CAMERA
+        else IntelVideoReader(WIDTH, HEIGHT)
+    )
 
     feed = FrameProvider("frame", cam)
 
@@ -91,7 +102,7 @@ if __name__ == "__main__":
         print(
             """
         -------------------------------------
-        Starting server
+        Starting socketio server
         -------------------------------------
         """
         )

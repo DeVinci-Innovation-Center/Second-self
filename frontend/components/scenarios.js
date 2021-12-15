@@ -15,7 +15,7 @@ function main_sc(){
         });
         selection();
         if (recieved){
-            socket.emit("update", true);
+            socket.emit("update_menu", true);
             recieved = false;
         }
     }
